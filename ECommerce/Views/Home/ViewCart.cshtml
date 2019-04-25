@@ -1,0 +1,51 @@
+﻿@using ClassLibrary1;
+@model List<CartItem>
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<style>
+    table, h2, h3, h4, th {
+        text-align: center;
+    }
+    button{
+        margin-top:20px;
+    }
+</style>
+
+<h3>Inside your shopping cart...</h3>
+
+<table class="table table-bordered table-hover table-striped">
+    <tr>
+        <th></th>
+        <th>Item</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Quanity</th>
+        <th>Total</th>
+    </tr>
+    @foreach (CartItem i in Model)
+    {
+        <tr>
+            <td width="200"> <img src="~/itemsImages/@i.Image" width="200" style="padding:0;" /></td>
+            <td> @i.Name</td>
+            <td> @i.Description</td>
+            <td> @i.Price.ToString("C")</td>
+            <td>
+                <select id="quantity" class="form-control" style="width:70px;">
+                    @for (int x = 1; x <= 10; x++)
+                    {
+                        if (x == i.Quantity)
+                        {
+                            <option selected="selected" data-id="@x)">@x</option>}
+                        <option data-id="@x)">@x</option>
+                    }
+                </select>
+                <button class="btn btn-danger pull-left">Delete</button>
+            </td>
+            <td> $@(i.Price * i.Quantity)</td>
+        </tr>
+    }
+</table>
+
+

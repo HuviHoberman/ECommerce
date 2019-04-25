@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "SignUp";
+}
+
+<style>
+   h3 {
+        text-align: center;
+    }
+    input, button {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 well">
+        <form method="post" action="/user/signUp">
+            <h3>Create a New Account</h3>
+            <input type="text" name="name" placeholder="Name" class="form-control" />
+            <input type="text" name="email" placeholder="Email" class="form-control" />
+            <input type="password" name="password" placeholder="Password" class="form-control" />
+            <button class="btn btn-info btn-block" style="margin-top:20px;">Create Account</button>
+        </form>
+    </div>
+</div>

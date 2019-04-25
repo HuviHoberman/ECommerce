@@ -1,0 +1,33 @@
+﻿@using ClassLibrary1;
+@model List<Category>
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<style>
+    table, h2, h3, h4, th {
+        text-align: center;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 well">
+        <form method="post" action="/user/categories">
+            <h3>Add a New Category</h3>
+            <input type="text" name="name" placeholder="Name" class="form-control" />
+            <button class="btn btn-info btn-block" style="margin-top:20px;">Add Category</button>
+        </form>
+    </div>
+</div>
+
+<table class="table table-bordered table-hover table-striped" >
+    <tr>
+        <th>Category Name</th>
+    </tr>
+    @foreach (Category c in Model)
+    {
+        <tr>
+            <td><a href="/user/itemsByCategory?id=@c.Id">@c.Name</a></td>
+        </tr>
+    }
+</table>

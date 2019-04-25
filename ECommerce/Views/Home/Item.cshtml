@@ -1,0 +1,70 @@
+﻿@using ClassLibrary1;
+@model ItemViewModel
+@{
+    ViewData["Title"] = "Product";
+}
+
+<style>
+    button {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Your item has been successfully added!</h4>
+            </div>
+            <div class="modal-body">
+                <button type="button" class="btn btn-info btn-lg" id="continue-shopping">Continue Shopping</button>
+                <button type="button" class="btn btn-info btn-lg" id="view-cart">View Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-3">
+        <p class="lead">My Ecommerce Site</p>
+        <div class="list-group">
+            @foreach (Category c in Model.Categories)
+            {
+                <a href="/home/index?categoryId=@c.Id" class="list-group-item">@c.Name</a>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-9">
+
+        <div class="thumbnail">
+            <img class="img-responsive" src="~/itemsImages/@Model.Item.Image" alt="">
+            <div class="caption-full">
+                <h4 class="pull-right">@Model.Item.Price.ToString("C")</h4>
+                <h4>@Model.Item.Name</h4>
+                <p>@Model.Item.Description</p>
+
+                <div>
+                    <label class="control-label col-md-offset-6 col-md-2" for="quantity">Quantity</label>
+                    <div class="col-md-6 col-md-4">
+                        <select id="quantity" class="form-control">
+                            @for (int x = 1; x <= 10; x++)
+                            {
+                                <option data-id="@x">@x</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn btn-info col-md-offset-9" data-toggle="modal" data-target="#myModal">Add to Shopping Cart</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
