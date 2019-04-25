@@ -47,6 +47,13 @@ namespace ClassLibrary1
 		public int Quantity { get; set; }
 	}
 
+	public class AddToCart 
+	{
+		public int ItemId { get; set; }
+		public int Quantity { get; set; }
+		public bool KeepShopping { get; set; }
+	}
+
 	public class Cart
 	{
 		public int Id { get; set; }
@@ -159,20 +166,20 @@ namespace ClassLibrary1
 			command.CommandText = "INSERT INTO Carts VALUES (@date);SELECT SCOPE_IDENTITY()";
 			command.Parameters.AddWithValue("@date", DateTime.Now);
 			connection.Open();
-			int cartId =(int) command.ExecuteScalar();
+			int cartId =(int) (decimal) command.ExecuteScalar();
 			connection.Close();
 			connection.Dispose();
 			return cartId;
 		}
 
-		public void AddToCart(CartItem item, int cartId)
+		public void AddToCart(AddToCart addToCart, int cartId)
 		{
 			SqlConnection connection = new SqlConnection(_connectionString);
 			SqlCommand command = connection.CreateCommand();
-			command.CommandText = "INSERT INTO CartsItems VALUES (@cartId, @itemId, @quanity)";
+			command.CommandText = "INSERT INTO CartsItems VALUES (@cartId, @itemId, @quantity)";
 			command.Parameters.AddWithValue("@cartId", cartId);
-			command.Parameters.AddWithValue("@itemId", item.Id);
-			command.Parameters.AddWithValue("@quantity", item.Quantity);
+			command.Parameters.AddWithValue("@itemId", addToCart.ItemId);
+			command.Parameters.AddWithValue("@quantity", addToCart.Quantity);
 			connection.Open();
 			command.ExecuteNonQuery();
 			connection.Close();

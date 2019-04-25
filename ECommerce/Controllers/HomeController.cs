@@ -45,7 +45,8 @@ namespace ECommerce.Controllers
 			return View(vm);
 		}
 		
-		public IActionResult AddToCart(CartItem item, bool keepShopping)
+		[HttpPost]
+		public IActionResult AddToCart(AddToCart addToCart)
 		{
 			ItemsManager mgr = new ItemsManager(_connectionString);
 
@@ -55,20 +56,16 @@ namespace ECommerce.Controllers
 				cartId = mgr.AddCartGetId().ToString();
 				HttpContext.Session.SetString("cartId", cartId);
 			}
-			mgr.AddToCart(item, int.Parse(cartId));
-			if (!keepShopping)
+			mgr.AddToCart(addToCart, int.Parse(cartId));
+			if (!addToCart.KeepShopping)
 			{
-				return View("/home/viewCart");
+				return Redirect($"/home/viewCart?cartId={cartId}");
 			}
-			return View("/");
+			return Redirect("/");
 		}
 
 		public IActionResult ViewCart(int cartId)
 		{
-			if (cartId == 0)
-			{
-				return Redirect("/");
-			}
 			ItemsManager mgr = new ItemsManager(_connectionString);
 			List<CartItem> items = mgr.GetCartItems(cartId);
 			return View(items);

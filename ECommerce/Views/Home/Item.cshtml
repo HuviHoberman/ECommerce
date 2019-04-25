@@ -12,16 +12,20 @@
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Your item has been successfully added!</h4>
+        <form action="/home/addToCart" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Your item has been successfully added!</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="itemId" value="@Model.Item.Id"/>
+                    <input type="hidden" id="selected-quantity" name="quantity" value=""/>
+                    <button class="continue btn btn-info btn-lg" name="keepShopping" value="true">Continue Shopping</button>
+                    <button class="continue btn btn-info btn-lg">View Cart</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <button type="button" class="btn btn-info btn-lg" id="continue-shopping">Continue Shopping</button>
-                <button type="button" class="btn btn-info btn-lg" id="view-cart">View Cart</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -53,18 +57,24 @@
                         <select id="quantity" class="form-control">
                             @for (int x = 1; x <= 10; x++)
                             {
-                                <option data-id="@x">@x</option>
+                                <option value="@x">@x</option>
                             }
                         </select>
                     </div>
                 </div>
 
-                <button class="btn btn-info col-md-offset-9" data-toggle="modal" data-target="#myModal">Add to Shopping Cart</button>
+                <button id="add-To-Cart"class="btn btn-info col-md-offset-9" data-toggle="modal" data-target="#myModal">Add to Shopping Cart</button>
 
             </div>
         </div>
 
     </div>
 </div>
+
+
+@section scripts
+{
+    <script src="/js/Index.js"></script>
+}
 
 
