@@ -1,5 +1,5 @@
 ﻿@using ClassLibrary1;
-@model IndexViewModel
+@model List<Category>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -10,33 +10,22 @@
 
         <div class="col-md-3">
             <p class="lead">My Ecommerce Site</p>
-            <div class="list-group">
-                @foreach (Category c in Model.Categories)
+            <div class="list-group categories" data-default-category="@Model[0].Id">
+                @foreach (Category c in Model)
                 {
-                    <a href="/home/index?categoryId=@c.Id" class="list-group-item">@c.Name</a>
+                    <button href="/home/index?categoryId=@c.Id" data-id="@c.Id" class="category list-group-item">@c.Name</button>
                 }
             </div>
         </div>
 
         <div class="col-md-9">
 
-            <div class="row">
-                @foreach (Item i in Model.Items)
-                {
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="~/itemsImages/@i.Image" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">@i.Price.ToString("C")</h4>
-                                <h4>
-                                    <a href="/home/item?id=@i.Id">@i.Name</a>
-                                </h4>
-                                <p>@i.Description</p>
-                            </div>
-                        </div>
-                    </div>
-                }
+            <div class="row items">
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts{ 
+<script src="~/js/Index.js"></script>
+}

@@ -32,13 +32,6 @@ namespace ECommerce
 				options.LoginPath = "/user/logIn";
 			});
 
-			services.Configure<CookiePolicyOptions>(options =>
-			{
-				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
-				options.CheckConsentNeeded = context => true;
-				options.MinimumSameSitePolicy = SameSiteMode.None;
-			});
-
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 		}
@@ -55,10 +48,9 @@ namespace ECommerce
 				app.UseExceptionHandler("/Home/Error");
 			}
 
-			app.UseSession();
+			
 			app.UseStaticFiles();
-			app.UseHttpsRedirection();
-			app.UseCookiePolicy();
+			app.UseSession();
 			app.UseAuthentication();
 			app.UseMvc(routes =>
 			{

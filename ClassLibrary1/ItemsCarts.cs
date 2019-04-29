@@ -30,12 +30,6 @@ namespace ClassLibrary1
 		public Category Category { get; set; }
 	}
 
-	public class IndexViewModel
-	{
-		public List<Item> Items { get; set; }
-		public List<Category> Categories { get; set; }
-	}
-
 	public class ItemViewModel
 	{
 		public Item Item { get; set; }
@@ -47,7 +41,13 @@ namespace ClassLibrary1
 		public int Quantity { get; set; }
 	}
 
-	public class AddToCart 
+	public class CartViewModel
+	{
+		public int CartId { get; set; }
+		public List<CartItem> CartItems { get; set; }
+	}
+
+	public class AddToCart
 	{
 		public int ItemId { get; set; }
 		public int Quantity { get; set; }
@@ -166,7 +166,7 @@ namespace ClassLibrary1
 			command.CommandText = "INSERT INTO Carts VALUES (@date);SELECT SCOPE_IDENTITY()";
 			command.Parameters.AddWithValue("@date", DateTime.Now);
 			connection.Open();
-			int cartId =(int) (decimal) command.ExecuteScalar();
+			int cartId = (int)(decimal)command.ExecuteScalar();
 			connection.Close();
 			connection.Dispose();
 			return cartId;
@@ -211,6 +211,19 @@ namespace ClassLibrary1
 			connection.Close();
 			connection.Dispose();
 			return items;
+		}
+
+		public void DeleteFromCart(int cartId, int itemId)
+		{
+			SqlConnection connection = new SqlConnection(_connectionString);
+			SqlCommand command = connection.CreateCommand();
+			command.CommandText = "DELETE FROM CartsItems WHERE CartId = @cartId AND ItemId = @itemId";
+			command.Parameters.AddWithValue("@cartId", cartId);
+			command.Parameters.AddWithValue("@itemId", itemId);
+			connection.Open();
+			command.ExecuteNonQuery();
+			connection.Close();
+			connection.Dispose();
 		}
 	}
 }

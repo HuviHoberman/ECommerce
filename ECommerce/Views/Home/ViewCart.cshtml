@@ -1,5 +1,5 @@
 ﻿@using ClassLibrary1;
-@model List<CartItem>
+@model CartViewModel
 @{
     ViewData["Title"] = "Cart";
 }
@@ -15,7 +15,7 @@
 
 <h3>Inside your shopping cart...</h3>
 
-<table class="table table-bordered table-hover table-striped">
+<table class="table table-bordered table-hover table-striped" id="cart-items" data-cart-id="@Model.CartId">
     <tr>
         <th></th>
         <th>Item</th>
@@ -24,7 +24,7 @@
         <th>Quanity</th>
         <th>Total</th>
     </tr>
-    @foreach (CartItem i in Model)
+    @foreach (CartItem i in Model.CartItems)
     {
         <tr>
             <td width="200"> <img src="~/itemsImages/@i.Image" width="200" style="padding:0;" /></td>
@@ -41,11 +41,17 @@
                         <option data-id="@x)">@x</option>
                     }
                 </select>
-                <button class="btn btn-danger pull-left">Delete</button>
+                <button class="btn btn-danger pull-left delete-item" data-item-id="@i.Id">Delete</button>
             </td>
             <td> $@(i.Price * i.Quantity)</td>
         </tr>
     }
 </table>
+
+<button class="btn btn-info pull-right" id="update-cart">Update Cart</button>
+
+@section scripts{ 
+<script src="~/js/Index.js"></script>
+}
 
 

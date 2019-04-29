@@ -68,7 +68,7 @@ namespace ECommerce.Controllers
 			Item item = new Item
 			{
 				Name = name,
-				Price = price,
+				Price = price,	
 				Description = description,
 				Image = fileName,
 				CategoryId = categoryId
