@@ -13,4 +13,4 @@ Users can view their cart where they can update the the quantity or delete produ
 
 The project uses a login system so that authorized users can manage categories and products. 
 
-This project uses Entity Framework, AJAX, authorization, and session. 
+This project uses MVC, ASP.Net Core, Entity Framework, AJAX, Json, authorization, and session. 
