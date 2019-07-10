@@ -1,5 +1,5 @@
 ﻿@using ClassLibrary1;
-@model CartViewModel
+@model int
 @{
     ViewData["Title"] = "Cart";
 }
@@ -8,14 +8,15 @@
     table, h2, h3, h4, th {
         text-align: center;
     }
-    button{
-        margin-top:20px;
+
+    button {
+        margin-top: 20px;
     }
 </style>
 
 <h3>Inside your shopping cart...</h3>
 
-<table class="table table-bordered table-hover table-striped" id="cart-items" data-cart-id="@Model.CartId">
+<table class="table table-bordered table-hover table-striped" id="cart-items" data-cart-id="@Model">
     <tr>
         <th></th>
         <th>Item</th>
@@ -24,34 +25,12 @@
         <th>Quanity</th>
         <th>Total</th>
     </tr>
-    @foreach (CartItem i in Model.CartItems)
-    {
-        <tr>
-            <td width="200"> <img src="~/itemsImages/@i.Image" width="200" style="padding:0;" /></td>
-            <td> @i.Name</td>
-            <td> @i.Description</td>
-            <td> @i.Price.ToString("C")</td>
-            <td>
-                <select id="quantity" class="form-control" style="width:70px;">
-                    @for (int x = 1; x <= 10; x++)
-                    {
-                        if (x == i.Quantity)
-                        {
-                            <option selected="selected" data-id="@x)">@x</option>}
-                        <option data-id="@x)">@x</option>
-                    }
-                </select>
-                <button class="btn btn-danger pull-left delete-item" data-item-id="@i.Id">Delete</button>
-            </td>
-            <td> $@(i.Price * i.Quantity)</td>
-        </tr>
-    }
 </table>
 
-<button class="btn btn-info pull-right" id="update-cart">Update Cart</button>
+<button class="btn btn-info pull-right" id="update-cart">Checkout</button>
 
-@section scripts{ 
-<script src="~/js/Index.js"></script>
+@section scripts{
+    <script src="~/js/ViewCart.js"></script>
 }
 
 

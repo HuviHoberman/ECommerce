@@ -41,12 +41,6 @@ namespace ClassLibrary1
 		public int Quantity { get; set; }
 	}
 
-	public class CartViewModel
-	{
-		public int CartId { get; set; }
-		public List<CartItem> CartItems { get; set; }
-	}
-
 	public class AddToCart
 	{
 		public int ItemId { get; set; }
@@ -218,6 +212,20 @@ namespace ClassLibrary1
 			SqlConnection connection = new SqlConnection(_connectionString);
 			SqlCommand command = connection.CreateCommand();
 			command.CommandText = "DELETE FROM CartsItems WHERE CartId = @cartId AND ItemId = @itemId";
+			command.Parameters.AddWithValue("@cartId", cartId);
+			command.Parameters.AddWithValue("@itemId", itemId);
+			connection.Open();
+			command.ExecuteNonQuery();
+			connection.Close();
+			connection.Dispose();
+		}
+
+		public void UpdateCart(int quantity, int cartId, int itemId)
+		{
+			SqlConnection connection = new SqlConnection(_connectionString);
+			SqlCommand command = connection.CreateCommand();
+			command.CommandText = "UPDATE CartsItems SET Quantity = @quantity WHERE CartId=@cartId AND ItemId=@itemId";
+			command.Parameters.AddWithValue("@quantity", quantity);
 			command.Parameters.AddWithValue("@cartId", cartId);
 			command.Parameters.AddWithValue("@itemId", itemId);
 			connection.Open();

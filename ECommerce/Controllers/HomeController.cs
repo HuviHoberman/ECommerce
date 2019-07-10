@@ -45,15 +45,15 @@ namespace ECommerce.Controllers
 			};
 			return View(vm);
 		}
-		
+
 		[HttpPost]
 		public IActionResult AddToCart(AddToCart addToCart)
 		{
 			ItemsManager mgr = new ItemsManager(_connectionString);
 
 			string cartId = HttpContext.Session.GetString("cartId");
-			if(cartId==null)
-			{				
+			if (cartId == null)
+			{
 				cartId = mgr.AddCartGetId().ToString();
 				HttpContext.Session.SetString("cartId", cartId);
 			}
@@ -67,31 +67,31 @@ namespace ECommerce.Controllers
 
 		public IActionResult ViewCart(int cartId)
 		{
-			ItemsManager mgr = new ItemsManager(_connectionString);
-			CartViewModel vm = new CartViewModel
-			{
-				CartId = cartId,
-				CartItems = mgr.GetCartItems(cartId)
-			};
-			return View(vm);
+			return View(cartId);
 		}
 
 		[HttpPost]
-		public IActionResult DeleteAndGetItems(int cartId, int itemId)
+		public IActionResult GetCartItems(int cartId)
 		{
+			ItemsManager mgr = new ItemsManager(_connectionString);
+			List<CartItem> items = mgr.GetCartItems(cartId);
+			return Json(items);
+		}
 
+		[HttpPost]
+		public IActionResult DeleteItem(int cartId, int itemId)
+		{
 			ItemsManager mgr = new ItemsManager(_connectionString);
 			mgr.DeleteFromCart(cartId, itemId);
-			List<CartItem> items = mgr.GetCartItems(cartId);
-			return Json(items);
+			return Json(GetCartItems(cartId));
 		}
 
 		[HttpPost]
-		public IActionResult UpdateCart(int cartId)
+		public IActionResult UpdateItem(int quantity, int cartId, int itemId)
 		{
 			ItemsManager mgr = new ItemsManager(_connectionString);
-			List<CartItem> items = mgr.GetCartItems(cartId);
-			return Json(items);
+			mgr.UpdateCart(quantity, cartId, itemId);
+			return Json(GetCartItems(cartId));
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
