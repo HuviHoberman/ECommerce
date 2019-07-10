@@ -1,32 +1,35 @@
 ﻿$(() => {
     let cartId = $("table").data('cart-id');
-    GetCartItems(cartId);
+    ClearAndPopulateTable(cartId);
 
-    function GetCartItems(cartId) {
-        $("#table tr:gt(0)").remove();
+    function ClearAndPopulateTable(cartId) {
+        $("table tr:gt(0)").remove();
         $.post('/home/GetCartItems', { cartId }, function (items) {
             items.forEach(AddCartItems);
         });
     };
 
     const AddCartItems = item => {
+        const itemId = item.id;
         $("table").append(`<tr>
             <td width="200"> <img src="/itemsImages/${item.image}" width="200" style="padding:0;" /></td>
             <td>${item.name}</td>
             <td>${item.description}</td>
             <td>${item.price}</td>
-            <td class="quantity">             
-                <button class="btn btn-danger pull-left delete" id="${item.id}">Delete</button>
+            <td id=${item.id}>             
+                <button class="btn btn-danger pull-left delete" data-item-id="${item.id}">Delete</button>
             </td >
             <td>$${(item.price * item.quantity).toFixed(2)}</td>
         </tr > `
         );
-        var select = createSelect(item.quantity);
-        $(".quantity").append(select);
+        var select = createSelect(item.quantity, item.id);
+        $(`#${item.id}`).append(select);       
     };
 
-    function createSelect(quantity) {
+    function createSelect(quantity, itemId) {
         var select = document.createElement("select");
+        select.setAttribute('data-item-id', itemId);
+        select.className="quantity"
         for (let i = 1; i <= 10; i++) {
             var option = document.createElement("option");
             option.value = i;
@@ -37,14 +40,14 @@
             }
             select.add(option);            
         }
-        return select;
-    }
+        return select;        
+    }       
 
-    $("table").on('click','.delete',  function () {
+    $("table").on('click', '.delete', function () {
         const itemId = $(this).data('item-id');
         console.log(itemId);
-        $.post('/home/DeleteItem', { cartId:cartId, itemId:itemId}, function (items) {
-            GetCartItems(cartId);
+        $.post('/home/DeleteItem', { cartId: cartId, itemId: itemId }, function (items) {
+            ClearAndPopulateTable(cartId);
         });
     });
 
@@ -54,7 +57,7 @@
         console.log(itemId);
         console.log(quantity);
         $.post('/home/UpdateItem', { cartId, itemId, quantity }, function (items) {
-            GetCartItems(cartId);
+            ClearAndPopulateTable(cartId);
         });
     });
 });
